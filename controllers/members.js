@@ -1,26 +1,26 @@
+const createHttpError = require('http-errors')
+const { endpointResponse } = require('../helpers/success')
+
 const db = require('../database/models')
 
 const { Members } = db
 
 module.exports = {
-  list: async (req, res) => {
+  list: async (req, res, next) => {
     try {
       const members = await Members.findAll()
-      return members.length !== 0
-        ? res.status(200).json({ status: res.statusCode, data: members })
-        : res.status(404).json({
-          error: {
-            status: res.statusCode,
-            msg: 'Members not found',
-          },
-        })
-    } catch (e) {
-      return res.status(500).json({
-        error: {
-          status: res.statusCode,
-          msg: e,
-        },
+      endpointResponse({
+        res,
+        code: 200,
+        status: true,
+        message: members,
       })
+    } catch (e) {
+      const httpError = createHttpError(
+        e.statusCode,
+        `[Error retrieving index] - [index - GET]: ${e.message}`,
+      )
+      next(httpError)
     }
   },
 }
