@@ -2,17 +2,17 @@ const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const db = require('../database/models')
 
-const { Users } = db
+const { User } = db
 
 // find all testimonials function
 const allUsers = async (req, res, next) => {
   try {
-    const User = await Users.findAll()
+    const Users = await User.findAll()
     endpointResponse({
       res,
       code: 200,
       status: true,
-      message: User,
+      message: Users,
     })
   } catch (err) {
     const httpError = createHttpError(
