@@ -4,22 +4,24 @@ const { catchAsync } = require('../helpers/catchAsync')
 
 const db = require('../database/models')
 
-const { Member } = db
+const { Organization } = db
 
+// find all Organization function
 module.exports = {
   list: catchAsync(async (req, res, next) => {
     try {
-      const members = await Member.findAll()
+      const organizations = await Organization.findAll()
       endpointResponse({
         res,
         code: 200,
         status: true,
-        message: members,
+        message: 'Organizations retrieved successfully',
+        body: organizations,
       })
-    } catch (e) {
+    } catch (error) {
       const httpError = createHttpError(
-        e.statusCode,
-        `[Error retrieving index] - [index - GET]: ${e.message}`,
+        error.statusCode,
+        `[Error retrieving organization] - [organization - list]: ${error.message}`,
       )
       next(httpError)
     }

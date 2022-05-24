@@ -4,17 +4,17 @@ const { catchAsync } = require('../helpers/catchAsync')
 
 const db = require('../database/models')
 
-const { Member } = db
+const { Category } = db
 
 module.exports = {
   list: catchAsync(async (req, res, next) => {
     try {
-      const members = await Member.findAll()
+      const categories = await Category.findAll()
       endpointResponse({
         res,
         code: 200,
         status: true,
-        message: members,
+        message: categories,
       })
     } catch (e) {
       const httpError = createHttpError(
