@@ -14,11 +14,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   New.init({
-    name: DataTypes.STRING,
-    content: DataTypes.TEXT,
-    image: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
+    timestamps: true,
+    paranoid: true,
     modelName: 'New',
   });
   return New;
