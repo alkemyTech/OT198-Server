@@ -8,4 +8,7 @@ const router = express.Router()
 router.get('/', get)
 router.use('/ping', pingRouter)
 
+// categories routes
+router.use('/categories', require('./categories'))
+
 module.exports = router
