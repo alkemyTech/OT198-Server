@@ -1,6 +1,7 @@
 const express = require('express')
 const { get } = require('../controllers/index')
 const pingRouter = require('./ping')
+const categoriesRouter = require('./categories')
 
 const router = express.Router()
 
@@ -9,6 +10,6 @@ router.get('/', get)
 router.use('/ping', pingRouter)
 
 // categories routes
-router.use('/categories', require('./categories'))
+router.use('/categories', categoriesRouter)
 
 module.exports = router
