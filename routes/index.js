@@ -11,6 +11,6 @@ router.get('/', get)
 router.use('/ping', pingRouter)
 router.use('/categories', categoriesRouter)
 
-router.use('/news/:id', newsRouter)
+router.use('/news/', newsRouter)
 
 module.exports = router

@@ -2,7 +2,7 @@ const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { getNewById } = require('../services/news')
 
-const getNews = async (req, res, next) => {
+const listNews = async (req, res, next) => {
   try {
     const { id } = req.Params
     if (id) {
@@ -17,15 +17,15 @@ const getNews = async (req, res, next) => {
         message: result,
       })
     }
-  } catch (e) {
+  } catch (error) {
     const httpError = createHttpError(
-      e.statusCode,
-      `[Error retrieving index] - [index - GET]: ${e.message}`,
+      error.statusCode,
+      `[Error retrieving index] - [index - GET]: ${error.message}`,
     )
     next(httpError)
   }
 }
 
 module.exports = {
-  getNews,
+  listNews,
 }
