@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const validateCategory = require('../middlewares/validateCategory')
-const validateErrors = require('../middlewares/validateErrors')
+const categorySchema = require('../schemas/category')
+const { validateSchema } = require('../middlewares/validateErrors')
 
 const { list, listCategory, post } = require('../controllers/categories')
 
@@ -11,6 +11,6 @@ router.get('/:id', listCategory)
 router.get('/', list)
 
 // create a new category
-router.post('/', validateCategory, validateErrors, post)
+router.post('/', validateSchema(categorySchema), post)
 
 module.exports = router

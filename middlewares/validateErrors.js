@@ -1,13 +1,15 @@
 const { validationResult } = require('express-validator')
 
-const validateErrors = (req, res, next) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors,
-    })
-  }
-  return next()
-}
+module.exports = {
+  validateSchema: (validations) => async (req, res, next) => {
+    await Promise.all(validations.map((validation) => validation.run(req)))
 
-module.exports = validateErrors
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors,
+      })
+    }
+    return next()
+  },
+}
