@@ -1,16 +1,31 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-const { createNew } = require('../services/new')
+const { getNewById } = require('../services/news')
+const { createNew } = require('../services/news')
 
-const { New } = require('../database/models')
-
-const getNews = async (req, res, next) => {
+const listNews = async (req, res, next) => {
   try {
-    const allNews = await New.findAll()
-    res.send(allNews)
+    const { id } = req.Params
+    if (id) {
+      const result = await getNewById(id)
+      if (!result) {
+        next(createHttpError(404, 'New not found'))
+      }
+      endpointResponse({
+        res,
+        code: 200,
+        status: true,
+        message: 'successfully retrieved',
+        body: result,
+      })
+    }
   } catch (error) {
-    next(error)
+    const httpError = createHttpError(
+      error.statusCode,
+      `[Error retrieving index] - [index - GET]: ${error.message}`,
+    )
+    next(httpError)
   }
 }
 
@@ -34,6 +49,6 @@ const post = catchAsync(async (req, res, next) => {
 })
 
 module.exports = {
-  getNews,
+  listNews,
   post,
 }
