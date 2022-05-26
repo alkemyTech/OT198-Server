@@ -1,13 +1,14 @@
 const db = require('../database/models')
 
 const { Category } = db
-
-const getCategoryById = async (id) => {
+// todo - create a error handler
+const listCategoryById = async (id) => {
   try {
     const category = await Category.findByPk(id, { attributes: ['name'] })
+    if (!category) throw new Error(`Category id ${id} not found`)
     return category
-  } catch (e) {
-    throw new Error(e)
+  } catch (error) {
+    throw new Error(error)
   }
 }
 
@@ -15,12 +16,12 @@ const listCategories = async () => {
   try {
     const categories = await Category.findAll({ attributes: ['name'] })
     return categories
-  } catch (e) {
-    return e
+  } catch (error) {
+    throw new Error(error)
   }
 }
 
 module.exports = {
   listCategories,
-  getCategoryById,
+  listCategoryById,
 }

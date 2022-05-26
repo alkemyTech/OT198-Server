@@ -1,9 +1,9 @@
 const router = require('express').Router()
 
-const { list, getCategory } = require('../controllers/categories')
+const { list, listCategory } = require('../controllers/categories')
 
 // get a category by id
-router.get('/:id', getCategory)
+router.get('/:id', listCategory)
 
 // get all categories
 router.get('/', list)

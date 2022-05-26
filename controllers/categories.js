@@ -1,6 +1,6 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
-const { listCategories, getCategoryById } = require('../services/categories')
+const { listCategories, listCategoryById } = require('../services/categories')
 
 const list = async (req, res, next) => {
   try {
@@ -20,13 +20,10 @@ const list = async (req, res, next) => {
   }
 }
 
-const getCategory = async (req, res, next) => {
+const listCategory = async (req, res, next) => {
   const { id } = req.params
   try {
-    const category = await getCategoryById(id)
-    if (!category) {
-      next(createHttpError(404, 'Category not found'))
-    }
+    const category = await listCategoryById(id)
     endpointResponse({
       res,
       code: 200,
@@ -34,10 +31,10 @@ const getCategory = async (req, res, next) => {
       message: 'Category found!',
       body: category,
     })
-  } catch (e) {
+  } catch (error) {
     const httpError = createHttpError(
-      e.statusCode,
-      `[Error retrieving category] - [category - GET]: ${e.message}`,
+      error.statusCode,
+      `[Error retrieving category] - [category - GET]: ${error.message}`,
     )
     next(httpError)
   }
@@ -45,5 +42,5 @@ const getCategory = async (req, res, next) => {
 
 module.exports = {
   list,
-  getCategory,
+  listCategory,
 }
