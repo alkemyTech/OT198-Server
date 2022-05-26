@@ -23,6 +23,31 @@ const allUsers = async (req, res, next) => {
   }
 }
 
+// create new users
+const post = async (req, res, next) => {
+  const {
+    name, surname, email, password,
+  } = req.body
+  try {
+    const Users = await User.create({
+      name, surname, email, password,
+    })
+    endpointResponse({
+      res,
+      code: 200,
+      status: true,
+      message: Users,
+    })
+  } catch (error) {
+    const httpError = createHttpError(
+      error.statusCode,
+      `[Error posting new user] - [users - POST]: ${error.message}`,
+    )
+    next(httpError)
+  }
+}
+
 module.exports = {
   allUsers,
+  post,
 }
