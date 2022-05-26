@@ -6,8 +6,8 @@ const getNewById = async (id) => {
   try {
     const result = await New.findByPk(id)
     return result
-  } catch (err) {
-    return err
+  } catch (error) {
+    return error
   }
 }
 
