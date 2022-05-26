@@ -11,7 +11,8 @@ const list = async (req, res, next) => {
       res,
       code: 200,
       status: true,
-      message: slide,
+      message: 'slide found',
+      body: slide,
     })
   } catch (error) {
     const httpError = createHttpError(error.statuscode)
