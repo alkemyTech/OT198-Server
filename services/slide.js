@@ -4,14 +4,7 @@ const { Slide } = db
 
 const listSlide = async () => {
   try {
-    const slides = await Slide.findAll({
-      where: {
-        order: [
-          ['order', 'ASC'],
-        ],
-        attributes: ['imgeURL'],
-      },
-    })
+    const slides = await Slide.findAll({ attributes: ['imageURL', 'order'] })
     return slides
   } catch (error) {
     return (error)
