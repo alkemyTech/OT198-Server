@@ -3,6 +3,7 @@ const { get } = require('../controllers/index')
 const pingRouter = require('./ping')
 const categoriesRouter = require('./categories')
 const organizationRouter = require('./organization')
+const newRouter = require('./new')
 
 const router = express.Router()
 
@@ -15,5 +16,8 @@ router.use('/categories', categoriesRouter)
 
 // organization routes
 router.use('/organization', organizationRouter)
+
+// new routes
+router.use('/new', newRouter)
 
 module.exports = router
