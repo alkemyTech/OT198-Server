@@ -4,8 +4,7 @@ const { Category } = db
 // todo - create a error handler
 const listCategoryById = async (id) => {
   try {
-    const category = await Category.findByPk(id, { attributes: ['name'] })
-    if (!category) throw new Error(`Category id ${id} not found`)
+    const category = await Category.findByPk(id)
     return category
   } catch (error) {
     throw new Error(error)
