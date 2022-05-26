@@ -1,5 +1,4 @@
 const createHttpError = require('http-errors')
-const { validationResult } = require('express-validator')
 const { endpointResponse } = require('../helpers/success')
 const { listCategories, listCategoryById, createCategory } = require('../services/categories')
 
@@ -34,30 +33,29 @@ const listCategory = async (req, res, next) => {
       body: category,
     })
   } catch (error) {
-    next(error)
+    const httpError = createHttpError(
+      error.statusCode,
+      `[Error with database] - [listCategory with ID - GET]: ${error.message}`,
+    )
+    next(httpError)
   }
 }
 
-const create = async (req, res, next) => {
-  if (validationResult(req).isEmpty()) {
-    try {
-      const { name, description, image } = req.body
-      const category = await createCategory({ name, description, image })
-      endpointResponse({
-        res,
-        code: 201,
-        status: true,
-        message: 'Category created',
-        body: category,
-      })
-    } catch (error) {
-      next(error)
-    }
-  } else {
-    const error = validationResult(req).mapped()
+const post = async (req, res, next) => {
+  try {
+    const { name, description, image } = req.body
+    const category = await createCategory({ name, description, image })
+    endpointResponse({
+      res,
+      code: 201,
+      status: true,
+      message: 'Category created',
+      body: category,
+    })
+  } catch (error) {
     const httpError = createHttpError(
-      400,
-      `Invalid request body, param name ${error.name.value ? error.name.msg : 'is missing'}`,
+      error.statusCode,
+      `[Error with database] - [create Category - POST]: ${error.message}`,
     )
     next(httpError)
   }
@@ -66,5 +64,5 @@ const create = async (req, res, next) => {
 module.exports = {
   list,
   listCategory,
-  create,
+  post,
 }
