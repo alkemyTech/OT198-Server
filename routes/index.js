@@ -13,6 +13,6 @@ router.use('/ping', pingRouter)
 // categories routes
 router.use('/categories', categoriesRouter)
 
-router.use('/news/', newsRouter)
+router.use('/news', newsRouter)
 
 module.exports = router

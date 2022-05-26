@@ -15,6 +15,7 @@ const listNews = async (req, res, next) => {
         code: 200,
         status: true,
         message: 'successfully retrieved',
+        body: result,
       })
     }
   } catch (error) {
