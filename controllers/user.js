@@ -1,6 +1,7 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const db = require('../database/models')
+const { createUser } = require('../services/user')
 
 const { User } = db
 
@@ -29,14 +30,13 @@ const post = async (req, res, next) => {
     name, surname, email, password,
   } = req.body
   try {
-    const Users = await User.create({
-      name, surname, email, password,
-    })
+    const user = await createUser(name, surname, email, password)
     endpointResponse({
       res,
       code: 200,
       status: true,
-      message: Users,
+      message: 'User created',
+      body: user,
     })
   } catch (error) {
     const httpError = createHttpError(
