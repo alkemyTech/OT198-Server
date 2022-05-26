@@ -2,12 +2,12 @@ const db = require('../database/models')
 
 const { User } = db
 
-const createUser = async (name, surname, email, password) => {
+const createUser = async (firstName, lastName, email, password) => {
   try {
-    const newUser = await User.create({
-      name, surname, email, password,
+    const user = await User.create({
+      firstName, lastName, email, password,
     })
-    return newUser
+    return user
   } catch (error) {
     throw new Error(error)
   }

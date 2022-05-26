@@ -27,10 +27,10 @@ const allUsers = async (req, res, next) => {
 // create new users
 const post = async (req, res, next) => {
   const {
-    name, surname, email, password,
+    firstName, lastName, email, password,
   } = req.body
   try {
-    const user = await createUser(name, surname, email, password)
+    const user = await createUser(firstName, lastName, email, password)
     endpointResponse({
       res,
       code: 200,
