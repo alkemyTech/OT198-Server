@@ -6,7 +6,7 @@ const getNews = async (req, res, next) => {
   try {
     const { id } = req.Params
     if (id) {
-      const result = await getNewById()
+      const result = await getNewById(id)
       if (!result) {
         next(createHttpError(404, 'New not found'))
       }

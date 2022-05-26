@@ -1,11 +1,11 @@
 const db = require('../database/models')
 
-const { Category } = db
+const { New } = db
 
-const getNewById = async () => {
+const getNewById = async (id) => {
   try {
-    const categories = await Category.findAll({ attributes: ['name'] })
-    return categories
+    const result = await New.findByPk(id)
+    return result
   } catch (err) {
     return err
   }
