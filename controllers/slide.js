@@ -15,7 +15,7 @@ const list = async (req, res, next) => {
       body: slide,
     })
   } catch (error) {
-    const httpError = createHttpError(error.statuscode)
+    const httpError = createHttpError(error.statuscode, `[Error retrieving slide] - [slide - GET]: ${error.message}`)
     next(httpError)
   }
 }
