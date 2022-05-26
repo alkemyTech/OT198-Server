@@ -15,7 +15,7 @@ const list = async (req, res, next) => {
   } catch (error) {
     const httpError = createHttpError(
       error.statusCode,
-      `[Error retrieving index] - [index - GET]: ${error.message}`,
+      `[Error retrieving categories] - [categories - GET]: ${error.message}`,
     )
     next(httpError)
   }
