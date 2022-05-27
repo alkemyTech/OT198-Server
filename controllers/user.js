@@ -1,7 +1,7 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const db = require('../database/models')
-const { createUser } = require('../services/user')
+const { createUser, deleteUser } = require('../services/user')
 
 const { User } = db
 
@@ -44,7 +44,29 @@ const post = async (req, res, next) => {
   }
 }
 
+// delete user
+const deleteUsers = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    const user = await deleteUser(id)
+    endpointResponse({
+      res,
+      code: 200,
+      status: true,
+      message: 'User deleted',
+      body: user,
+    })
+  } catch (error) {
+    const httpError = createHttpError(
+      error.statusCode,
+      `[Error deleting user] - [users - DELETE]: ${error.message}`,
+    )
+    next(httpError)
+  }
+}
+
 module.exports = {
   allUsers,
   post,
+  deleteUsers,
 }
