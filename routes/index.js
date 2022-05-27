@@ -4,6 +4,8 @@ const pingRouter = require('./ping')
 const categoriesRouter = require('./categories')
 const newsRouter = require('./news')
 const organizationRouter = require('./organization')
+const authRouter = require('./auth')
+const newRouter = require('./news')
 const activitiesRouter = require('./activity')
 const slidesRouter = require('./slide')
 
@@ -19,9 +21,14 @@ router.use('/categories', categoriesRouter)
 router.use('/news', newsRouter)
 // organization routes
 router.use('/organization', organizationRouter)
+// auth routes
+router.use('/auth', authRouter)
 // slides routes
 router.use('/slides', slidesRouter)
 
+// new routes
+router.use('/new', newRouter)
+// activity routes
 router.use('/activities', activitiesRouter)
 
 module.exports = router
