@@ -6,6 +6,7 @@ const newsRouter = require('./news')
 const organizationRouter = require('./organization')
 const authRouter = require('./auth')
 const newRouter = require('./news')
+const activitiesRouter = require('./activity')
 const slidesRouter = require('./slide')
 const userRouter = require('./user')
 
@@ -30,5 +31,7 @@ router.use('/slides', slidesRouter)
 router.use('/new', newRouter)
 // user routes
 router.use('/users', userRouter)
+// activity routes
+router.use('/activities', activitiesRouter)
 
 module.exports = router
