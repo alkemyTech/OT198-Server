@@ -1,13 +1,13 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-const { listSlides, listSlideById } = require('../services/slide')
+const { listSlide, listSlideById } = require('../services/slide')
 
 // find all Slide function
 
 const list = catchAsync(async (req, res, next) => {
   try {
-    const publicData = await listSlides()
+    const publicData = await listSlide()
     endpointResponse({
       res,
       code: 200,
@@ -26,7 +26,7 @@ const list = catchAsync(async (req, res, next) => {
 
 // find by Id Slide function
 
-const listSlide = async (req, res, next) => {
+const listById = async (req, res, next) => {
   const { id } = req.params
   try {
     const slide = await listSlideById(id)
@@ -48,5 +48,5 @@ const listSlide = async (req, res, next) => {
 }
 
 module.exports = {
-  list, listSlide,
+  list, listById,
 }

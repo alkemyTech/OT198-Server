@@ -2,10 +2,10 @@ const express = require('express')
 
 const router = new express.Router()
 
-const { list, listSlide } = require('../controllers/slide')
+const { list, listById } = require('../controllers/slide')
 
 router.get('/', list)
 
-router.get('/:id', listSlide)
+router.get('/:id', listById)
 
 module.exports = router
