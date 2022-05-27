@@ -18,14 +18,14 @@ module.exports = {
       throw new Error(error)
     }
   },
-  tryLogin: async ({ email, password }) => {
+  getUserWithEmail: async ({ email, password }) => {
     try {
       const user = await User.findOne({ where: { email } })
       if (!user || !bcrypt.compareSync(password, user.password)) {
         return {
           code: 401,
           status: false,
-          message: 'User not found or password incorrect',
+          message: 'Invalid credentials',
           body: { ok: false },
         }
       }

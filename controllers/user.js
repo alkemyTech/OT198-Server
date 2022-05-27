@@ -1,6 +1,6 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
-const { createUser, tryLogin } = require('../services/user')
+const { createUser, getUserWithEmail } = require('../services/user')
 
 module.exports = {
   post: async (req, res, next) => {
@@ -26,7 +26,7 @@ module.exports = {
     try {
       const {
         code, status, message, body,
-      } = await tryLogin({ email, password })
+      } = await getUserWithEmail({ email, password })
       endpointResponse({
         res,
         code,
