@@ -5,6 +5,7 @@ const categoriesRouter = require('./categories')
 const newsRouter = require('./news')
 const organizationRouter = require('./organization')
 const activitiesRouter = require('./activity')
+const slidesRouter = require('./slide')
 
 const router = express.Router()
 
@@ -18,6 +19,8 @@ router.use('/categories', categoriesRouter)
 router.use('/news', newsRouter)
 // organization routes
 router.use('/organization', organizationRouter)
+// slides routes
+router.use('/slides', slidesRouter)
 
 router.use('/activities', activitiesRouter)
 
