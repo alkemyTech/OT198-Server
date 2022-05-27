@@ -45,7 +45,7 @@ const post = async (req, res, next) => {
 }
 
 // delete user
-const deleteUsers = async (req, res, next) => {
+const destroy = async (req, res, next) => {
   const { id } = req.params
   try {
     const user = await deleteUser(id)
@@ -68,5 +68,5 @@ const deleteUsers = async (req, res, next) => {
 module.exports = {
   allUsers,
   post,
-  deleteUsers,
+  destroy,
 }

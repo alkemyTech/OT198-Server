@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const { deleteUsers } = require('../controllers/user')
+const { destroy } = require('../controllers/user')
 
 // delete user
-router.delete('/:id', deleteUsers)
+router.delete('/:id', destroy)
 
 module.exports = router

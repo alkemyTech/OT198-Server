@@ -17,13 +17,10 @@ const createUser = async (data) => {
   }
 }
 
-const deleteUser = async (data) => {
-  const {
-    firstName, lastName, email, password,
-  } = data
+const deleteUser = async (id) => {
   try {
-    const user = await User.create({
-      firstName, lastName, email, password: bcrypt.hashSync(password, 12),
+    const user = await User.destroy({
+      where: { id },
     })
     return user
   } catch (error) {
