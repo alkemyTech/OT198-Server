@@ -20,9 +20,7 @@ const userSchema = [
   body('password')
     .isLength({ min: 8 })
     .trim()
-    .withMessage('password must have at least 8 characters')
-    .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$/)
-    .withMessage('Must have at least 1 uppercase, 1 lowercase letter and 1 number'),
+    .withMessage('password must have at least 8 characters'),
 ]
 
 module.exports = userSchema
