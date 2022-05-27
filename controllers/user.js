@@ -2,6 +2,7 @@ const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const db = require('../database/models')
 const { createUser, deleteUser } = require('../services/user')
+const { notFound } = require('../helpers/notFound')
 
 const { User } = db
 
@@ -49,6 +50,7 @@ const destroy = async (req, res, next) => {
   const { id } = req.params
   try {
     const user = await deleteUser(id)
+    notFound({ res, user, message: 'User not found' })
     endpointResponse({
       res,
       code: 200,
