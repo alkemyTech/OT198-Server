@@ -22,7 +22,7 @@ const deleteUser = async (id) => {
     const user = await User.destroy({
       where: { id },
     })
-    return user
+    return user === 1 ? { code: 200, status: true, message: 'User deleted' } : { code: 400, status: false, message: `User ${id} not found` }
   } catch (error) {
     throw new Error(error)
   }

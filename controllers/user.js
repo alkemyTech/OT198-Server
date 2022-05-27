@@ -2,7 +2,6 @@ const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const db = require('../database/models')
 const { createUser, deleteUser } = require('../services/user')
-const { notFound } = require('../helpers/notFound')
 
 const { User } = db
 
@@ -49,14 +48,12 @@ const post = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   const { id } = req.params
   try {
-    const user = await deleteUser(id)
-    notFound({ res, user, message: 'User not found' })
+    const { code, status, message } = await deleteUser(id)
     endpointResponse({
       res,
-      code: 200,
-      status: true,
-      message: 'User deleted',
-      body: user,
+      code,
+      status,
+      message,
     })
   } catch (error) {
     const httpError = createHttpError(
