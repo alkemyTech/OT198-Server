@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { userSchema } = require('../schemas/user')
+const userSchema = require('../schemas/user')
 const { validateSchema } = require('../middlewares/validateErrors')
 const { post } = require('../controllers/user')
 
