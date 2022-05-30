@@ -13,7 +13,7 @@ const userRouter = require('./user')
 const router = express.Router()
 
 // Middlewares
-const auth = require('../middlewares/auth')
+const { auth } = require('../middlewares/auth')
 
 // example of a route with index controller get function
 router.get('/', get)
