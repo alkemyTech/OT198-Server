@@ -36,7 +36,7 @@ const deleteCategory = async (id) => {
     })
     return user === 1
       ? { code: 200, status: true, message: 'Category deleted' }
-      : { code: 400, status: false, message: `Category with id ${id} not found` }
+      : { code: 404, status: false, message: `Category with id ${id} not found` }
   } catch (error) {
     throw new Error(error)
   }
