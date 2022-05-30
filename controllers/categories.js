@@ -1,6 +1,11 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
-const { listCategories, listCategoryById, createCategory } = require('../services/categories')
+const {
+  listCategories,
+  listCategoryById,
+  createCategory,
+  deleteCategory,
+} = require('../services/categories')
 
 const list = async (req, res, next) => {
   try {
@@ -24,14 +29,10 @@ const list = async (req, res, next) => {
 const listCategory = async (req, res, next) => {
   const { id } = req.params
   try {
-    const category = await listCategoryById(id)
-    if (!category) throw next(createHttpError(404, `Category with id ${id} not found`))
+    const response = await listCategoryById(id)
     endpointResponse({
       res,
-      code: 200,
-      status: true,
-      message: 'Category found',
-      body: category,
+      ...response,
     })
   } catch (error) {
     const httpError = createHttpError(
@@ -62,8 +63,28 @@ const post = async (req, res, next) => {
   }
 }
 
+const destroy = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    const { code, status, message } = await deleteCategory(id)
+    endpointResponse({
+      res,
+      code,
+      status,
+      message,
+    })
+  } catch (error) {
+    const httpError = createHttpError(
+      error.statusCode,
+      `[Error with database] - [delete Category - DELETE]: ${error.message}`,
+    )
+    next(httpError)
+  }
+}
+
 module.exports = {
   list,
   listCategory,
   post,
+  destroy,
 }
