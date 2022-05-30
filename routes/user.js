@@ -1,5 +1,8 @@
 const router = require('express').Router()
-const { destroy } = require('../controllers/user')
+const { destroy, list } = require('../controllers/user')
+
+// list all users
+router.get('/', list)
 
 // delete user
 router.delete('/:id', destroy)

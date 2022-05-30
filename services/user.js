@@ -18,6 +18,21 @@ module.exports = {
       throw new Error(error)
     }
   },
+  getAllUsers: async () => {
+    try {
+      const users = await User.findAll()
+      return users
+        ? {
+          code: 200,
+          status: true,
+          message: 'Users listed',
+          body: users,
+        }
+        : { code: 400, status: false, message: 'Users not found' }
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
   getUserWithEmail: async ({ email, password }) => {
     try {
       const user = await User.findOne({ where: { email } })
@@ -44,7 +59,9 @@ module.exports = {
       const user = await User.destroy({
         where: { id },
       })
-      return user === 1 ? { code: 200, status: true, message: 'User deleted' } : { code: 400, status: false, message: `User ${id} not found` }
+      return user === 1
+        ? { code: 200, status: true, message: 'User deleted' }
+        : { code: 400, status: false, message: `User ${id} not found` }
     } catch (error) {
       throw new Error(error)
     }
