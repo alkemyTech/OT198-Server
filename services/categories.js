@@ -12,7 +12,7 @@ const listCategoryById = async (id) => {
         message: 'Category found',
         body: category,
       }
-      : { code: 404, status: false, message: 'Category not found' }
+      : { code: 404, status: false, message: `Category with id ${id} not found` }
   } catch (error) {
     throw new Error(error)
   }
