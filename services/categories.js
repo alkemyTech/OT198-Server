@@ -32,7 +32,9 @@ const upDateCategory = async (categoryToEdit, id) => {
     const editCategory = await Category.update(categoryToEdit, {
       where: { id },
     })
-    return editCategory[0] === 1 ? { code: 200, status: true, message: 'Category edited' } : { code: 400, status: false, message: `Category ${id} not found` }
+    return editCategory[0] === 1
+      ? { code: 200, status: true, message: 'Category edited' }
+      : { code: 404, status: false, message: `Category ${id} not found` }
   } catch (error) {
     throw new Error(error)
   }
