@@ -1,9 +1,6 @@
 const { CreateBucketCommand } = require('@aws-sdk/client-s3')
 const { s3Client } = require('../libs/s3Client')
 
-// Cuando el servicio este conectado, se deberan eliminar los siguientes paquetes
-require('dotenv').config()
-
 // Set the parameters
 const bucketParams = {
   Bucket: process.env.S3_BUCKET_NAME,
