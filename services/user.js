@@ -28,7 +28,7 @@ module.exports = {
           message: 'Users listed',
           body: users,
         }
-        : { code: 400, status: false, message: 'Users not found' }
+        : { code: 404, status: false, message: 'Users not found' }
     } catch (error) {
       throw new Error(error)
     }
