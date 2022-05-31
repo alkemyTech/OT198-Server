@@ -8,6 +8,7 @@ module.exports = {
       firstName, lastName, email, password,
     } = data
     try {
+      // todo - change this to find or create to return better error messages
       const user = await User.create({
         firstName,
         lastName,
