@@ -8,6 +8,6 @@ const { post, listNews, update } = require('../controllers/news')
 
 router.get('/:id', listNews)
 router.post('/', validateSchema(newSchema), post)
-router.put('/:id', update)
+router.put('/:id', validateSchema(newSchema), update)
 
 module.exports = router
