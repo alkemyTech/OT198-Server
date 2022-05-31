@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const { User } = require('../database/models')
+const { sendWelcomeEmail } = require('./sendgrid')
 
 module.exports = {
   createUser: async (data) => {
@@ -13,6 +14,7 @@ module.exports = {
         email,
         password: bcrypt.hashSync(password, 12),
       })
+      await sendWelcomeEmail(email)
       return user
     } catch (error) {
       throw new Error(error)
@@ -54,14 +56,17 @@ module.exports = {
           body: { ok: false },
         }
       }
-      const result = await User.update({
-        firstName,
-        lastName,
-        email,
-        password: bcrypt.hashSync(password, 12),
-      }, {
-        where: { id: idUser },
-      })
+      const result = await User.update(
+        {
+          firstName,
+          lastName,
+          email,
+          password: bcrypt.hashSync(password, 12),
+        },
+        {
+          where: { id: idUser },
+        },
+      )
       return result
     } catch (error) {
       throw new Error(error)
@@ -72,7 +77,9 @@ module.exports = {
       const user = await User.destroy({
         where: { id },
       })
-      return user === 1 ? { code: 200, status: true, message: 'User deleted' } : { code: 400, status: false, message: `User ${id} not found` }
+      return user === 1
+        ? { code: 200, status: true, message: 'User deleted' }
+        : { code: 400, status: false, message: `User ${id} not found` }
     } catch (error) {
       throw new Error(error)
     }
