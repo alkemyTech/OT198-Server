@@ -8,7 +8,6 @@ const sendWelcomeEmail = async (email) => {
       from: process.env.SENDGRID_EMAIL,
       subject: 'Welcome to the app',
       text: 'Welcome to the app, enjoy!',
-      html: '<strong>Welcome to the app, enjoy!</strong>',
     }
     await sgMail.send(msg)
   } catch (error) {
