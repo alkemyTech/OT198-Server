@@ -1,17 +1,16 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
-const s3Service = require('../services/s3Service')
+/* const s3Service = require('../services/s3Service') */
 
 module.exports = {
   pong: async (req, res, next) => {
     try {
-      const data = await s3Service()
       endpointResponse({
         res,
         code: 200,
         status: true,
         message: 'PONG',
-        body: data,
+        body: req.file,
       })
     } catch (error) {
       const httpError = createHttpError(
