@@ -14,7 +14,7 @@ module.exports = {
         })
       } else {
         const token = req.headers.authorization.split(' ')[1]
-        validateToken(token)
+        validateToken(token, req, res, next)
       }
     } catch (error) {
       const httpError = createHttpError(
