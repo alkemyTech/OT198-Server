@@ -1,11 +1,13 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
-const { getNewById, createNew, updateNew } = require('../services/news')
+const {
+  getNewById, createNew, updateNew, deleteNew,
+} = require('../services/news')
 
 module.exports = {
   listNews: async (req, res, next) => {
     try {
-      const { id } = req.Params
+      const { id } = req.params
       if (id) {
         const result = await getNewById(id)
         if (!result) {
@@ -63,6 +65,22 @@ module.exports = {
       const httpError = createHttpError(
         error.statusCode,
         `[Error with database] - [update New - PUT]: ${error.message}`,
+      )
+      next(httpError)
+    }
+  },
+  destroy: async (req, res, next) => {
+    const { id } = req.params
+    try {
+      const result = await deleteNew(id)
+      endpointResponse({
+        res,
+        ...result,
+      })
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error with database] - [delete New - DELETE]: ${error.message}`,
       )
       next(httpError)
     }
