@@ -1,7 +1,7 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 
-const { listActivity, postActivity } = require('../services/activity')
+const { listActivity, postActivity, updateActivity } = require('../services/activity')
 
 // find all activities
 

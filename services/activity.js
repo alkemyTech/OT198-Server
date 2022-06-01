@@ -20,4 +20,13 @@ const postActivity = async (activity) => {
   }
 }
 
-module.exports = { listActivity, postActivity }
+const updateActivity = async (activity) => {
+  try {
+    const newActivity = await Activity.update(activity)
+    return newActivity
+  } catch (e) {
+    throw new Error(e)
+  }
+}
+
+module.exports = { listActivity, postActivity, updateActivity }
