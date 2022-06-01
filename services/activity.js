@@ -1,32 +1,28 @@
-const db = require('../database/models')
+const { Activity } = require('../database/models')
 
-const { Activity } = db
-
-const listActivity = async () => {
-  try {
-    const activities = await Activity.findAll()
-    return activities
-  } catch (e) {
-    throw new Error(e)
-  }
+module.exports = {
+  listActivity: async () => {
+    try {
+      const activities = await Activity.findAll()
+      return activities
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  postActivity: async (activity) => {
+    try {
+      const newActivity = await Activity.create(activity)
+      return newActivity
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  updateActivity: async (activity) => {
+    try {
+      const newActivity = await Activity.update(activity)
+      return newActivity
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
-
-const postActivity = async (activity) => {
-  try {
-    const newActivity = await Activity.create(activity)
-    return newActivity
-  } catch (e) {
-    throw new Error(e)
-  }
-}
-
-const updateActivity = async (activity) => {
-  try {
-    const newActivity = await Activity.update(activity)
-    return newActivity
-  } catch (e) {
-    throw new Error(e)
-  }
-}
-
-module.exports = { listActivity, postActivity, updateActivity }

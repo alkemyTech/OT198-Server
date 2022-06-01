@@ -3,68 +3,55 @@ const { endpointResponse } = require('../helpers/success')
 
 const { listActivity, postActivity, updateActivity } = require('../services/activity')
 
-// find all activities
-
-const ShowAll = async (req, res, next) => {
-  try {
-    const activities = await listActivity()
-    endpointResponse({
-      res,
-      code: 200,
-      status: true,
-      message: activities,
-    })
-  } catch (err) {
-    const httpError = createHttpError(
-      err.statusCode,
-      `Error showing all activities: ${err.message}`,
-    )
-    next(httpError)
-  }
-}
-
-const post = async (req, res, next) => {
-  try {
-    const { name, image, content } = req.body
-    const newActivity = await postActivity({ name, image, content })
-    endpointResponse({
-      res,
-      code: 201,
-      status: true,
-      message: 'Activity created',
-      body: newActivity,
-    })
-  } catch (error) {
-    const httpError = createHttpError(
-      error.statusCode,
-      `[Error with database] - [create Activity - POST]: ${error.message}`,
-    )
-    next(httpError)
-  }
-}
-
-const put = async (req, res, next) => {
-  try {
-    const { name, image, content } = req.body
-    const newActivity = await updateActivity({ name, image, content })
-    endpointResponse({
-      res,
-      code: 201,
-      status: true,
-      message: 'Activity created',
-      body: newActivity,
-    })
-  } catch (error) {
-    const httpError = createHttpError(
-      error.statusCode,
-      `[Error with database] - [create Activity - POST]: ${error.message}`,
-    )
-    next(httpError)
-  }
-}
-
 module.exports = {
-  ShowAll,
-  post,
-  put,
+  list: async (req, res, next) => {
+    try {
+      const response = await listActivity()
+      endpointResponse({
+        res,
+        ...response,
+      })
+    } catch (err) {
+      const httpError = createHttpError(
+        err.statusCode,
+        `Error showing all activities: ${err.message}`,
+      )
+      next(httpError)
+    }
+  },
+  post: async (req, res, next) => {
+    try {
+      const { name, image, content } = req.body
+      const newActivity = await postActivity({ name, image, content })
+      endpointResponse({
+        res,
+        code: 201,
+        status: true,
+        message: 'Activity created',
+        body: newActivity,
+      })
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error with database] - [create Activity - POST]: ${error.message}`,
+      )
+      next(httpError)
+    }
+  },
+  update: async (req, res, next) => {
+    try {
+      const { name, image, content } = req.body
+      const response = await updateActivity({ name, image, content })
+      endpointResponse({
+        res,
+        ...response,
+      })
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error with database] - [create Activity - POST]: ${error.message}`,
+      )
+      next(httpError)
+    }
+  },
 }
