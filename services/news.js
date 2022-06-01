@@ -53,4 +53,24 @@ module.exports = {
       throw new Error(error)
     }
   },
+  deleteNew: async (idNew) => {
+    try {
+      const deletedNew = await New.destroy({
+        where: { id: idNew },
+      })
+      return deletedNew === 1
+        ? {
+          code: 200,
+          status: true,
+          message: `New ${idNew} deleted`,
+        }
+        : {
+          code: 404,
+          status: false,
+          message: `New ${idNew} not found`,
+        }
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
