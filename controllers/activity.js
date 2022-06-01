@@ -43,7 +43,28 @@ const post = async (req, res, next) => {
   }
 }
 
+const put = async (req, res, next) => {
+  try {
+    const { name, image, content } = req.body
+    const newActivity = await updateActivity({ name, image, content })
+    endpointResponse({
+      res,
+      code: 201,
+      status: true,
+      message: 'Activity created',
+      body: newActivity,
+    })
+  } catch (error) {
+    const httpError = createHttpError(
+      error.statusCode,
+      `[Error with database] - [create Activity - POST]: ${error.message}`,
+    )
+    next(httpError)
+  }
+}
+
 module.exports = {
   ShowAll,
   post,
+  put,
 }
