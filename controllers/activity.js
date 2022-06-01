@@ -21,8 +21,9 @@ module.exports = {
   },
   post: async (req, res, next) => {
     try {
+      const { id } = req.params
       const { name, image, content } = req.body
-      const newActivity = await postActivity({ name, image, content })
+      const newActivity = await postActivity({ name, image, content }, id)
       endpointResponse({
         res,
         code: 201,
