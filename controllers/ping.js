@@ -10,7 +10,7 @@ module.exports = {
         code: 200,
         status: true,
         message: 'PONG',
-        body: req.file.location,
+        body: { fileLocation: req.file ? req.file.location : null },
       })
     } catch (error) {
       const httpError = createHttpError(

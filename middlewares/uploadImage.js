@@ -11,10 +11,10 @@ module.exports = {
     storage: multerS3({
       s3: s3Client,
       bucket: BUCKET,
-      metadata(req, file, cb) {
+      metadata: (req, file, cb) => {
         cb(null, { fieldName: file.fieldname })
       },
-      key(req, file, cb) {
+      key: (req, file, cb) => {
         const name = req.body.name || req.body.email
         cb(null, `${name}-${Date.now().toString()}${path.extname(file.originalname)}`)
       },
