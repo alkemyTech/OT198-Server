@@ -16,11 +16,11 @@ const contactsRouter = require('./contacts')
 const router = express.Router()
 
 // Middlewares
-const { auth } = require('../middlewares/auth')
+/* const { auth } = require('../middlewares/auth') */
 
 // example of a route with index controller get function
 router.get('/', get)
-router.use('/ping', auth, pingRouter)
+router.use('/ping', /* auth, */ pingRouter)
 
 // categories routes
 router.use('/categories', categoriesRouter)
