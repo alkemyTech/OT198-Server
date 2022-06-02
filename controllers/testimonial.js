@@ -1,15 +1,17 @@
-const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 const { createTestimonial } = require('../services/testimonial')
+const { catchAsync } = require('../helpers/catchAsync')
+const httpStatus = require('../utils/httpStatus')
 
 module.exports = {
-  post: async (req, res, next) => {
-    try {
-      const { name, content, image } = req.body
-      const response = await createTestimonial({ name, content, image })
-      return endpointResponse({ res, ...response })
-    } catch (error) {
-      return next(createHttpError(500, error))
-    }
-  },
+  post: catchAsync(async (req, res) => {
+    const response = await createTestimonial(req.body)
+
+    return endpointResponse({
+      res,
+      code: httpStatus.CREATED,
+      message: 'Testimonial created successfully',
+      body: response,
+    })
+  }),
 }
