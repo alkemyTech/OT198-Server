@@ -22,8 +22,11 @@ module.exports = {
       const editActivity = await Activity.update(activity, {
         where: { id },
       })
+      const activityEdited = await Activity.findByPk(id)
       return editActivity[0] === 1
-        ? { code: 200, status: true, message: 'Activity edited' }
+        ? {
+          code: 200, status: true, message: 'Activity edited', body: activityEdited,
+        }
         : { code: 404, status: false, message: `Activity ${id} not found` }
     } catch (error) {
       throw new Error(error)
