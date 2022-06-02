@@ -1,6 +1,5 @@
 const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
-/* const s3Service = require('../services/s3Service') */
 
 module.exports = {
   pong: async (req, res, next) => {

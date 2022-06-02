@@ -1,27 +1,47 @@
-const path = require('path')
-
 const multer = require('multer')
-const multerS3 = require('multer-s3')
-const { s3Client } = require('../libs/s3Client')
+const fs = require('fs')
+const util = require('util')
+const { PutObjectCommand } = require('@aws-sdk/client-s3')
+const { catchAsync } = require('../helpers/catchAsync')
+
+const unlinkFile = util.promisify(fs.unlink)
+const { s3 } = require('../libs/s3Client')
 
 const BUCKET = process.env.S3_BUCKET_NAME
 
+const upload = multer({
+  dest: 'uploads/',
+  limits: { fileSize: 5000000 },
+  fileFilter: (req, file, cb) => {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error('Please upload an image'))
+    }
+    cb(undefined, true)
+  },
+})
+
 module.exports = {
-  upload: multer({
-    storage: multerS3({
-      s3: s3Client,
-      bucket: BUCKET,
-      metadata: (req, file, cb) => {
-        cb(null, { fieldName: file.fieldname })
-      },
-      key: (req, file, cb) => {
-        const name = req.body.name || req.body.email
-        cb(null, `${name}-${Date.now().toString()}${path.extname(file.originalname)}`)
-      },
-    }),
-    /* filtra los tipos de archivos que se pueden subir */
-    fileFilter: (req, file, cb) => {
-      cb(null, file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png' || file.mimetype === 'image/gif')
-    },
+  uploadImage: (image) => catchAsync(async (req, res, next) => {
+    upload.single(image)(req, res, async (err) => {
+      if (err) {
+        const httpError = new Error(err.message)
+        httpError.statusCode = 400
+        return next(httpError)
+      }
+      const fileStream = fs.createReadStream(req.file.path)
+      const uploadParams = {
+        Bucket: BUCKET,
+        Body: fileStream,
+        Key: req.file.filename,
+      }
+
+      await s3.send(new PutObjectCommand(uploadParams))
+
+      const fileLocation = `https://${BUCKET}.s3.amazonaws.com/${req.file.filename}`
+      req.file.location = fileLocation
+      await unlinkFile(req.file.path)
+
+      return next()
+    })
   }),
 }
