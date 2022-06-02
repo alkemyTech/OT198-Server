@@ -106,7 +106,7 @@ module.exports = {
   },
   userDataByToken: async (req, res, next) => {
     try {
-      const { user } = req.user
+      const { user } = req
       endpointResponse({
         res,
         code: 200,
