@@ -5,7 +5,7 @@ const errorConverter = (err, req, res, next) => {
   let error = err
   if (!(error instanceof ApiError)) {
     const statusCode = error.statusCode || httpStatus.INTERNAL_SERVER_ERROR
-    const message = error.message || 'Internal server error'
+    const message = 'Internal server error' // para no mostrar informacion de la base de datos (puede mejorarse)
     error = new ApiError(statusCode, message, false)
   }
   next(error)
@@ -13,12 +13,13 @@ const errorConverter = (err, req, res, next) => {
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
-  const { statusCode, message } = err
+  const { statusCode, message, status } = err
 
   res.locals.errorMessage = err.message
 
   const response = {
     code: statusCode,
+    status: status || false,
     message,
   }
 
