@@ -10,6 +10,7 @@ const unlinkFile = util.promisify(fs.unlink)
 const { s3Client } = require('../libs/s3Client')
 
 const BUCKET = process.env.S3_BUCKET_NAME
+const REGION = process.env.AWS_REGION
 
 const upload = multer({
   fileFilter: (req, file, cb) => {
@@ -45,7 +46,7 @@ module.exports = {
 
       await s3Client.send(new PutObjectCommand(uploadParams))
 
-      const fileLocation = `https://${BUCKET}.s3.amazonaws.com/${req.file.filename}`
+      const fileLocation = `https://${BUCKET}.s3.${REGION}.amazonaws.com/${req.file.filename}`
       req.file.location = fileLocation
       await unlinkFile(req.file.path)
 
