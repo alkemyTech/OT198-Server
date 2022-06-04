@@ -45,6 +45,7 @@ module.exports = {
         data.imageURL = await uploadImageToS3(req)
       } catch (error) {
         await slide.update(data)
+        if (data.imageURL) await unlinkFile(req.file.path)
         throw new ApiError(
           httpStatus.PARTIAL_CONTENT,
           'slide content updated but there is a error uploading image',
