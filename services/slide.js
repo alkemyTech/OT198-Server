@@ -4,7 +4,8 @@ const fs = require('fs')
 const unlinkFile = util.promisify(fs.unlink)
 const { Slide } = require('../database/models')
 const ApiError = require('../helpers/ApiError')
-const { uploadImageToAmazon } = require('./uploadImageToS3')
+const { uploadImageToS3 } = require('./uploadImageToS3')
+const httpStatus = require('../helpers/httpStatus')
 
 module.exports = {
   listSlide: async () => {
@@ -35,12 +36,20 @@ module.exports = {
     const slide = await Slide.findByPk(id)
     if (!slide) {
       if (data.imageURL) await unlinkFile(req.file.path)
-      throw new ApiError(404, `Slide with id ${id} not found`)
+      throw new ApiError(httpStatus.NOT_FOUND, `Slide with id ${id} not found`)
     }
     if (!data.imageURL) {
       data.imageURL = slide.imageURL
     } else {
-      data.imageURL = await uploadImageToAmazon(req)
+      try {
+        data.imageURL = await uploadImageToS3(req)
+      } catch (error) {
+        await slide.update(data)
+        throw new ApiError(
+          httpStatus.PARTIAL_CONTENT,
+          'slide content updated but there is a error uploading image',
+        )
+      }
     }
 
     const updatedSlide = await slide.update(data)
