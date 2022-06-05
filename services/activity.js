@@ -1,4 +1,6 @@
 const { Activity } = require('../database/models')
+const ApiError = require('../helpers/ApiError')
+const httpStatus = require('../helpers/httpStatus')
 
 module.exports = {
   listActivity: async () => {
@@ -14,7 +16,7 @@ module.exports = {
       const newActivity = await Activity.create(activity)
       return newActivity
     } catch (error) {
-      throw new Error(error)
+      throw new ApiError(httpStatus.BAD_REQUEST, error.message)
     }
   },
   updateActivity: async (activity, id) => {
@@ -22,14 +24,11 @@ module.exports = {
       const editActivity = await Activity.update(activity, {
         where: { id },
       })
-      const activityEdited = await Activity.findByPk(id)
-      return editActivity[0] === 1
-        ? {
-          code: 200, status: true, message: 'Activity edited', body: activityEdited,
-        }
-        : { code: 404, status: false, message: `Activity ${id} not found` }
+      if (editActivity[0] !== 1) throw new Error(`Activity ${id} not found`)
+      const activityUpdated = await Activity.findByPk(id)
+      return activityUpdated
     } catch (error) {
-      throw new Error(error)
+      throw new ApiError(httpStatus.NOT_FOUND, error.message)
     }
   },
 }
