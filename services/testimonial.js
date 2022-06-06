@@ -3,21 +3,17 @@ const ApiError = require('../helpers/ApiError')
 const httpStatus = require('../helpers/httpStatus')
 
 module.exports = {
+  /**
+   * Create a testimonial
+   *
+   * @param {object} testimonialToCreate object with the testimonial data
+   * @returns {object} testimonial created with the data provided in the request body or an error
+   */
   createTestimonial: async (testimonialToCreate) => {
-    try {
-      const newTestimonial = await Testimonial.create(testimonialToCreate)
-      return newTestimonial
-        ? {
-          code: 201,
-          status: true,
-          message: 'Testimonial created successfully',
-          body: newTestimonial,
-        }
-        : { code: 400, status: true, message: 'Testimonial not created' }
-    } catch (error) {
-      throw new Error(error)
-    }
+    const newTestimonial = await Testimonial.create(testimonialToCreate)
+    return newTestimonial
   },
+
   /**
    * Delete a testimonial
    *
