@@ -10,6 +10,14 @@ const listSlide = async () => {
   }
 }
 
+const listSlideByOrder = async () => {
+  try {
+    return await Slide.findAll({ order: [['order', 'ASC']] })
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 const listSlideById = async (id) => {
   try {
     const slide = await Slide.findByPk(id)
@@ -20,5 +28,7 @@ const listSlideById = async (id) => {
 }
 
 module.exports = {
-  listSlide, listSlideById,
+  listSlide,
+  listSlideByOrder,
+  listSlideById,
 }
