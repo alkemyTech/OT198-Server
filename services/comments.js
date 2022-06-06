@@ -6,7 +6,7 @@ module.exports = {
   listComments: async () => {
     const comments = await Comment.findAll({
       attributes: ['body'],
-      order: [['createdAt', 'ASC']],
+      order: [['createdAt', 'DESC']],
     })
     if (comments.length === 0) {
       throw new ApiError(httpStatus.NOT_FOUND, 'No comments found')
