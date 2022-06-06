@@ -16,6 +16,19 @@ const sendWelcomeEmail = async (email) => {
     throw new Error(error)
   }
 }
+const sendContactEmail = async (email) => {
+  try {
+    const msg = {
+      to: email,
+      from: process.env.SENDGRID_EMAIL,
+      subject: 'Thanks for your contact',
+      html: html('Titulo dinamico', 'Texto de mail dinamico', 'Datos de contacto dinamicos'),
+    }
+    await sgMail.send(msg)
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 module.exports = {
-  sendWelcomeEmail,
+  sendWelcomeEmail, sendContactEmail,
 }
