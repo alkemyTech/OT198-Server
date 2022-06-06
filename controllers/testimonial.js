@@ -5,8 +5,7 @@ const { createTestimonial, deleteTestimonial } = require('../services/testimonia
 
 module.exports = {
   post: catchAsync(async (req, res) => {
-    const { name, content, image } = req.body
-    const testimonialCreated = await createTestimonial({ name, content, image })
+    const testimonialCreated = await createTestimonial(req)
     return endpointResponse({
       res,
       code: httpStatus.CREATED,
