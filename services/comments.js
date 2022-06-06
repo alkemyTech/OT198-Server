@@ -4,13 +4,14 @@ const httpStatus = require('../helpers/httpStatus')
 
 module.exports = {
   listComments: async () => {
-    const comments = await Comment.findAll({
-      attributes: ['body'],
-      order: [['createdAt', 'DESC']],
-    })
-    if (comments.length === 0) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'No comments found')
+    try {
+      const comments = await Comment.findAll({
+        attributes: ['body'],
+        order: [['createdAt', 'DESC']],
+      })
+      return comments
+    } catch (error) {
+      throw new ApiError(httpStatus.NOT_FOUND, error.parent.code)
     }
-    return comments
   },
 }
