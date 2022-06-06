@@ -3,7 +3,7 @@ const { createTestimonialSchema, updateTestimonialSchema } = require('../schemas
 const { validateSchema } = require('../middlewares/validateErrors')
 const { auth } = require('../middlewares/auth')
 const { isAdmin } = require('../middlewares/isAdmin')
-const { post, update } = require('../controllers/testimonial')
+const { post, update, destroy } = require('../controllers/testimonial')
 const { uploadImage } = require('../middlewares/uploadImage')
 
 router.post('/', auth, isAdmin, validateSchema(createTestimonialSchema), post)
@@ -16,5 +16,9 @@ router.put(
   validateSchema(updateTestimonialSchema),
   update,
 )
+
+router.post('/', auth, isAdmin, validateSchema(createTestimonialSchema), post)
+
+router.delete('/:id', auth, isAdmin, destroy)
 
 module.exports = router
