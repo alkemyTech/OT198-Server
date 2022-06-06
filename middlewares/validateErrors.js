@@ -14,6 +14,7 @@ module.exports = {
     if (!errors.isEmpty()) {
       if (req.file) await unlinkFile(req.file.path)
       return res.status(httpStatus.BAD_REQUEST).json({
+        code: httpStatus.BAD_REQUEST,
         status: false,
         errors: errors.array(),
       })
