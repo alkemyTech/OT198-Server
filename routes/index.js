@@ -12,6 +12,7 @@ const userRouter = require('./user')
 const testimonialRouter = require('./testimonial')
 const contactsRouter = require('./contacts')
 const commentsRouter = require('./comments')
+const membersRouter = require('./members')
 
 const router = express.Router()
 
@@ -55,5 +56,7 @@ router.use('/testimonials', testimonialRouter)
 
 // comments routes
 router.use('/comments', commentsRouter)
+// members routes
+router.use('/members', membersRouter)
 
 module.exports = router
