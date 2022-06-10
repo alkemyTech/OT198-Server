@@ -1,6 +1,6 @@
 const { catchAsync } = require('../helpers/catchAsync')
 const { endpointResponse } = require('../helpers/success')
-const { listComments, createComments } = require('../services/comments')
+const { listComments, updateComment, createComments } = require('../services/comments')
 
 module.exports = {
   list: catchAsync(async (req, res) => {
@@ -22,6 +22,16 @@ module.exports = {
       status: true,
       message: 'Comment created',
       body: comment,
+    })
+  }),
+  update: catchAsync(async (req, res) => {
+    const updatedComment = await updateComment(req)
+    endpointResponse({
+      res,
+      code: 200,
+      status: true,
+      message: 'Comment updated',
+      body: updatedComment,
     })
   }),
 }

@@ -1,6 +1,6 @@
 const { body } = require('express-validator')
 
-const commentSchema = [
+const newCommentSchema = [
   body('userId')
     .toInt()
     .isInt({ min: 1 })
@@ -20,5 +20,6 @@ const commentSchema = [
     .notEmpty()
     .withMessage('NewId is required'),
 ]
+const commentSchema = [body('body').isString().withMessage('must be a string').trim()]
 
-module.exports = commentSchema
+module.exports = { commentSchema, newCommentSchema }
