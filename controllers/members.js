@@ -43,22 +43,7 @@ module.exports = {
   }),
   update: catchAsync(async (req, res) => {
     const { id } = req.params
-    const {
-      name,
-      facebookUrl,
-      instagramUrl,
-      linkedinUrl,
-      image,
-      description,
-    } = req.body
-    const memberUpdated = await updateMember({
-      name,
-      facebookUrl,
-      instagramUrl,
-      linkedinUrl,
-      image,
-      description,
-    }, id)
+    const memberUpdated = await updateMember(req, id)
     endpointResponse({
       res,
       code: httpStatus.OK,
