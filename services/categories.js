@@ -9,7 +9,7 @@ module.exports = {
   },
   listCategoryById: async (id) => {
     const category = await Category.findByPk(id)
-    if (!category) throw new ApiError(404, 'Category not found')
+    if (!category) throw new ApiError(httpStatus.NOT_FOUND, 'Category not found')
     return category
   },
   updateCategory: async (categoryToEdit, id) => {

@@ -5,7 +5,7 @@ const httpStatus = require('../helpers/httpStatus')
 module.exports = {
   getNewById: async (id) => {
     const result = await New.findByPk(id)
-    if (!result) throw new ApiError(404, 'New not found')
+    if (!result) throw new ApiError(httpStatus.NOT_FOUND, 'New not found')
     return result
   },
   createNew: async (body) => {

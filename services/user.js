@@ -19,7 +19,7 @@ module.exports = {
         password: bcrypt.hashSync(password, 12),
       },
     })
-    if (!created) throw new ApiError(409, 'Email already exists')
+    if (!created) throw new ApiError(httpStatus.CONFLICT, 'Email already exists')
     await sendWelcomeEmail(email)
     const token = generateToken(user.dataValues)
     return token

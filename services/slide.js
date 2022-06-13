@@ -79,7 +79,7 @@ module.exports = {
     const slide = await Slide.destroy({
       where: { id },
     })
-    if (slide !== 1) throw new Error(`Slide with id ${id} not found`)
+    if (slide !== 1) throw new ApiError(httpStatus.NOT_FOUND, `Slide with id ${id} not found`)
     return true
   },
 }
