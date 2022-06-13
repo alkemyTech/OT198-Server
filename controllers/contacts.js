@@ -18,7 +18,7 @@ module.exports = {
     const createdContact = await createContact(req.body)
     endpointResponse({
       res,
-      code: 201,
+      code: httpStatus.CREATED,
       status: true,
       message: 'Contact created',
       body: createdContact,
