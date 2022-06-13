@@ -17,7 +17,7 @@ module.exports = {
       body: [publicData, publicSlide],
     })
   }),
-  put: catchAsync(async (req, res) => {
+  update: catchAsync(async (req, res) => {
     const updatedOrganization = await updateOrganization(1, req.body)
     endpointResponse({
       res,

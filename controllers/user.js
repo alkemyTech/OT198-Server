@@ -17,7 +17,7 @@ module.exports = {
       res,
       code: httpStatus.OK,
       status: true,
-      message: 'User created',
+      message: 'Users listed',
       body: users,
     })
   }),
@@ -42,7 +42,7 @@ module.exports = {
       body: { user, token },
     })
   }),
-  put: catchAsync(async (req, res) => {
+  update: catchAsync(async (req, res) => {
     const user = await updateUser(req)
     endpointResponse({
       res,
