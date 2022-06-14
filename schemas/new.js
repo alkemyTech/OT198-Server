@@ -1,11 +1,17 @@
 const { body } = require('express-validator')
 
 module.exports = {
-  memberSchema: [
+  newSchema: [
     body('name')
       .isString()
-      .trim()
       .withMessage('must be a string')
+      .trim()
+      .notEmpty()
+      .withMessage('required'),
+    body('content')
+      .isString()
+      .withMessage('must be a string')
+      .trim()
       .notEmpty()
       .withMessage('required'),
     body('image')
@@ -14,10 +20,10 @@ module.exports = {
       .trim()
       .notEmpty()
       .withMessage('required'),
-    body('description')
-      .isString()
-      .withMessage('must be a string')
-      .trim()
+    body('categoryId')
+      .toInt()
+      .isInt({ min: 1 })
+      .withMessage('must be an interger')
       .notEmpty()
       .withMessage('required'),
   ],
