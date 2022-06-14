@@ -21,7 +21,7 @@ module.exports = {
       page: baseURL + resource + stringPage + currentPage,
       nextPage: nextPage ? baseURL + resource + stringPage + nextPage : undefined,
       prevPage: prevPage ? baseURL + resource + stringPage + prevPage : undefined,
-      lastPage: baseURL + resource + stringPage + lastPage,
+      lastPage: lastPage === 0 ? undefined : baseURL + resource + stringPage + lastPage,
     }
   },
 }
