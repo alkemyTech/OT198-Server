@@ -2,12 +2,23 @@ const httpStatus = require('../helpers/httpStatus')
 const { catchAsync } = require('../helpers/catchAsync')
 const { endpointResponse } = require('../helpers/success')
 const {
+  listTestimonial,
   createTestimonial,
   updateTestimonial,
   deleteTestimonial,
 } = require('../services/testimonial')
 
 module.exports = {
+  list: catchAsync(async (req, res) => {
+    const testimonials = await listTestimonial()
+    return endpointResponse({
+      res,
+      code: httpStatus.OK,
+      status: true,
+      messege: 'Testimonials found',
+      body: testimonials,
+    })
+  }),
   post: catchAsync(async (req, res) => {
     const testimonialCreated = await createTestimonial(req)
     return endpointResponse({
