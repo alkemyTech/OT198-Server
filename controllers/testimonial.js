@@ -7,16 +7,22 @@ const {
   updateTestimonial,
   deleteTestimonial,
 } = require('../services/testimonial')
+const { calculatePagination } = require('../utils/pagination')
 
 module.exports = {
   list: catchAsync(async (req, res) => {
-    const testimonials = await listTestimonial()
+    const resource = req.baseUrl
+    req.query.page = req.query.page || 1
+    const testimonials = await listTestimonial(req.query.page)
     return endpointResponse({
       res,
       code: httpStatus.OK,
       status: true,
       message: 'Testimonials found',
-      body: testimonials,
+      body: {
+        ...calculatePagination(req.query.page, testimonials.count, resource),
+        testimonials: testimonials.rows,
+      },
     })
   }),
   post: catchAsync(async (req, res) => {

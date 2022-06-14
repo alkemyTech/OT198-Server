@@ -8,8 +8,12 @@ const { uploadImageToS3 } = require('./uploadImageToS3')
 const unlinkFile = util.promisify(fs.unlink)
 
 module.exports = {
-  listTestimonial: async () => {
-    const allTestimonials = await Testimonial.findAll()
+  listTestimonial: async (page) => {
+    const allTestimonials = await Testimonial.findAll({
+      limit: 10,
+      offset: 10 * (page - 1),
+      order: [['createdAt', 'DESC']],
+    })
     return allTestimonials
   },
   /**
