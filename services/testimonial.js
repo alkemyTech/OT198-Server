@@ -9,7 +9,7 @@ const unlinkFile = util.promisify(fs.unlink)
 
 module.exports = {
   listTestimonial: async (page) => {
-    const allTestimonials = await Testimonial.findAll({
+    const allTestimonials = await Testimonial.findAndCountAll({
       limit: 10,
       offset: 10 * (page - 1),
       order: [['createdAt', 'DESC']],
