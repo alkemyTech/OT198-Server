@@ -11,7 +11,24 @@ const {
 // get a category by id
 router.get('/:id', listCategory)
 
-// get all categories
+/**
+ * @swagger
+ * /categories:
+ *   get:
+ *     description: Get all categories
+ *     responses:
+ *       200:
+ *         description: Returns a categories.
+ *         content:
+ *              application/json:
+ *                schema:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    attributes: only name
+ *       500:
+ *         description: Internal server error.
+ */
 router.get('/', list)
 
 // create a new category
