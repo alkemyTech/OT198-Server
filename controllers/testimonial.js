@@ -15,7 +15,7 @@ module.exports = {
       res,
       code: httpStatus.OK,
       status: true,
-      messege: 'Testimonials found',
+      message: 'Testimonials found',
       body: testimonials,
     })
   }),
