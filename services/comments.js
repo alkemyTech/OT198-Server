@@ -1,7 +1,6 @@
 const { Comment, User, New } = require('../database/models')
 const ApiError = require('../helpers/ApiError')
 const httpStatus = require('../helpers/httpStatus')
-/* const { decodeToken } = require('../middlewares/jwt') */
 
 module.exports = {
   listComments: async () => {
