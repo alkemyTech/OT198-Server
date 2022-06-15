@@ -2,7 +2,7 @@ const ApiError = require('../helpers/ApiError')
 const { decodeToken } = require('./jwt')
 const httpStatus = require('../helpers/httpStatus')
 const { catchAsync } = require('../helpers/catchAsync')
-const { Roles } = require('../constants/roles')
+const Roles = require('../constants/roles')
 
 module.exports = {
   ownershipValidate: catchAsync(async (req, res, next) => {

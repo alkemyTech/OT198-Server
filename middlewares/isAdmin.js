@@ -2,7 +2,7 @@ const ApiError = require('../helpers/ApiError')
 const { catchAsync } = require('../helpers/catchAsync')
 const httpStatus = require('../helpers/httpStatus')
 const { decodeToken } = require('./jwt')
-const { Roles } = require('../constants/roles')
+const Roles = require('../constants/roles')
 
 module.exports = {
   isAdmin: catchAsync(async (req, res, next) => {

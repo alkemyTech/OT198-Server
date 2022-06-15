@@ -4,7 +4,7 @@ const { sendWelcomeEmail } = require('./sendgrid')
 const ApiError = require('../helpers/ApiError')
 const { generateToken } = require('../middlewares/jwt')
 const httpStatus = require('../helpers/httpStatus')
-const { Roles } = require('../constants/roles')
+const Roles = require('../constants/roles')
 
 module.exports = {
   createUser: async (data) => {
