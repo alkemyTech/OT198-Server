@@ -44,7 +44,7 @@ const { uploadImage } = require('../middlewares/uploadImage')
  *       properties:
  *         id:
  *          type: integer
- *         description: The id of the testimonial
+ *          description: The id of the testimonial
  *         name:
  *           type: string
  *           description: The name of the testimonial
