@@ -25,35 +25,37 @@ const { uploadImage } = require('../middlewares/uploadImage')
  *       properties:
  *         name:
  *           type: string
- *           description: The name of the testimonial
+ *           format: string
  *         image:
- *          type: string
- *          description: The testimonial image
+ *          type: file
+ *          format: binary
  *         content:
  *           type: string
- *           description: The content of the testimonial
+ *           format: string
  *       example:
  *         name: Testimonial 1
  *         image: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
  *         content: "This is a testimonial"
  *     TestimonialResponseSchema:
  *       type: object
- *       required:
- *         - name
- *         - content
  *       properties:
  *         id:
  *          type: integer
- *          description: The id of the testimonial
  *         name:
  *           type: string
- *           description: The name of the testimonial
+ *           format: string
  *         image:
- *          type: string
- *          description: The testimonial image
+ *           type: file
+ *           format: binary
  *         content:
  *           type: string
- *           description: The content of the testimonial
+ *           format: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+*         updatedAt:
+ *           type: string
+ *           format: date-time
  *       example:
  *         status: true
  *         message: "Testimonial created successfully"
