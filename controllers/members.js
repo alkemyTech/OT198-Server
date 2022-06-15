@@ -1,12 +1,14 @@
 const httpStatus = require('../helpers/httpStatus')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-
-const { listMembers, createMember, deleteMember } = require('../services/members')
+const {
+  listMembers, createMember, deleteMember, updateMember,
+} = require('../services/members')
 const { calculatePagination } = require('../utils/pagination')
 
 module.exports = {
   list: catchAsync(async (req, res) => {
+    const resource = req.baseUrl
     req.query.page = req.query.page || 1
     const members = await listMembers(req.query.page)
     endpointResponse({
@@ -15,7 +17,7 @@ module.exports = {
       status: true,
       message: 'Members successfully retrieved',
       body: {
-        ...calculatePagination(req.query.page, members.count),
+        ...calculatePagination(req.query.page, members.count, resource),
         members: members.rows,
       },
     })
@@ -38,6 +40,17 @@ module.exports = {
       code: httpStatus.OK,
       status,
       message: 'Member deleted',
+    })
+  }),
+  update: catchAsync(async (req, res) => {
+    const { id } = req.params
+    const memberUpdated = await updateMember(req, id)
+    endpointResponse({
+      res,
+      code: httpStatus.OK,
+      status: true,
+      message: 'Member updated',
+      body: memberUpdated,
     })
   }),
 }
