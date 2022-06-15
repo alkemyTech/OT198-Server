@@ -39,23 +39,32 @@ const { uploadImage } = require('../middlewares/uploadImage')
  *     TestimonialResponseSchema:
  *       type: object
  *       properties:
- *         id:
- *          type: integer
- *         name:
- *           type: string
- *           format: string
- *         image:
- *           type: file
- *           format: binary
- *         content:
- *           type: string
- *           format: string
- *         createdAt:
- *           type: string
- *           format: date-time
-*         updatedAt:
- *           type: string
- *           format: date-time
+ *         status:
+ *          type: boolean
+ *          format: boolean
+ *         message:
+ *          type: string
+ *          format: string
+ *         body:
+ *          type: object
+ *          properties:
+ *              id:
+ *                type: integer
+ *              name:
+ *                type: string
+ *                format: string
+ *              image:
+ *                type: file
+ *                format: binary
+ *              content:
+ *                type: string
+ *                format: string
+ *              createdAt:
+ *                type: string
+ *                format: date-time
+ *              updatedAt:
+ *                type: string
+ *                format: date-time
  *       example:
  *         status: true
  *         message: "Testimonial created successfully"
