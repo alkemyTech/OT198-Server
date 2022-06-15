@@ -10,8 +10,6 @@ const { uploadImage } = require('../middlewares/uploadImage')
 
 router.get('/', auth, list)
 
-router.post('/', auth, isAdmin, validateSchema(createTestimonialSchema), post)
-
 router.put(
   '/:id',
   auth,
