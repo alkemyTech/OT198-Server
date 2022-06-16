@@ -32,15 +32,14 @@ describe('testimonials', () => {
             expect(res.body.body).to.have.property('token')
             authToken = res.body.body.token
         })
-
+        await Testimonial.destroy({ where: {},force: true })
         await Testimonial.bulkCreate(dummyTestimonials)
         
     })
 
     after(async () => {
-        await Testimonial.destroy({ where: {} })
+        await Testimonial.destroy({ where: {},force: true })
     })
-
 
     describe('GET /testimonials', () => {
         it('should return a list of testimonials', async () => {
@@ -53,7 +52,7 @@ describe('testimonials', () => {
             })
         }
     )
-
+    let testimonialId
     describe('POST /testimonials', () => {
         it('should create a new testimonial', async () => {
             const response = await (await request(app)
@@ -66,13 +65,14 @@ describe('testimonials', () => {
             expect(response.body.body).to.have.property('name', 'Testimonial 3')
             expect(response.body.body).to.have.property('content', 'Testimonial content 3')
             expect(response.body.body).to.have.property('image')
+            testimonialId = response.body.body.id
             })})
 
 
     describe('PUT /testimonials/:id', () => {
         it('should update a testimonial', async () => {
             const response = await (await request(app)
-                .put('/testimonials/1')
+                .put('/testimonials/'+testimonialId)
                 .set('Authorization','Bearer '+authToken)
                 .field('name', 'Testimonial 3')
                 .field('content', 'Testimonial content 3')
@@ -86,7 +86,7 @@ describe('testimonials', () => {
     describe('DELETE /testimonials/:id', () => {
         it('should delete a testimonial', async () => {
             const response = await (await request(app)
-                .delete('/testimonials/1')
+                .delete('/testimonials/'+testimonialId)
                 .set('Authorization','Bearer '+authToken))
             expect(response).to.have.property('status', 200)
             expect(response.body).to.have.property('message', 'Testimonial deleted successfully')
@@ -174,6 +174,8 @@ describe('testimonials', () => {
             }
         )}
     )
+
+
 
 
 })
