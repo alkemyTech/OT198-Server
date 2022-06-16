@@ -17,113 +17,33 @@ const { uploadImage } = require('../middlewares/uploadImage')
  *       in: header
  *       name: Authorization
  *   schemas:
- *     TestimonialCreateSchema:
+ *     Testimonial:
  *       type: object
- *       required:
- *         - name
- *         - content
  *       properties:
  *         name:
  *           type: string
  *           format: string
+ *           example: "John Doe"
  *         image:
- *          type: file
- *          format: binary
+ *          type: string
+ *          format: string
+ *          example: "https://example.com/image.png"
  *         content:
  *           type: string
  *           format: string
- *       example:
- *         name: Testimonial 1
- *         image: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
- *         content: "This is a testimonial"
- *     TestimonialResponseSchema:
- *       type: object
- *       properties:
- *         status:
- *          type: boolean
- *          format: boolean
- *         message:
- *          type: string
- *          format: string
- *         body:
- *          type: object
- *          properties:
- *              id:
- *                type: integer
- *              name:
- *                type: string
- *                format: string
- *              image:
- *                type: file
- *                format: binary
- *              content:
- *                type: string
- *                format: string
- *              createdAt:
- *                type: string
- *                format: date-time
- *              updatedAt:
- *                type: string
- *                format: date-time
- *       example:
- *         status: true
- *         message: "Testimonial created successfully"
- *         body:
- *            id: 1
- *            name: Testimonial 1
- *            image: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
- *            content: "This is a testimonial"
- *            createdAt: "2020-01-01T00:00:00.000Z"
- *            updatedAt: "2020-01-01T00:00:00.000Z"
- *     Error400Schema:
- *        type: object
- *        properties:
- *          code:
- *           type: integer
- *           description: The error code
- *          status:
- *              type: boolean
- *              description: The status of the response
- *          message:
- *              type: string
- *              description: The message of the response
- *        example:
- *         code: 400
- *         status: false
- *         message: "Testimonial not created"
- *     Error500Schema:
- *        type: object
- *        properties:
- *          code:
- *           type: integer
- *           description: The error code
- *          status:
- *              type: boolean
- *              description: The status of the response
- *          message:
- *              type: string
- *              description: The message of the response
- *        example:
- *         code: 500
- *         status: false
- *         message: "Internal server error"
- *     Error404Schema:
- *        type: object
- *        properties:
- *          code:
- *           type: integer
- *           description: The error code
- *          status:
- *              type: boolean
- *              description: The status of the response
- *          message:
- *              type: string
- *              description: The message of the response
- *        example:
- *         code: 404
- *         status: false
- *         message: "Testimonial with id 1 not found"
-
+ *           example: "This is a testimonial"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2020-01-01T00:00:00.000Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2020-01-01T00:00:00.000Z"
+ *         deletedAt:
+ *           type: string
+ *           format: date-time
+ *           example: null
  */
 
 // Define testimonial tags
@@ -166,19 +86,56 @@ const { uploadImage } = require('../middlewares/uploadImage')
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/components/schemas/TestimonialResponseSchema'
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   format: boolean
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *                 body:
+ *                   $ref: '#/components/schemas/Testimonial'
  *       400:
  *        description: Bad request
  *        content:
  *          application/json:
  *           schema:
- *            $ref: '#/components/schemas/Error400Schema'
+ *             type: object
+ *             properties:
+ *               code:
+ *                type: integer
+ *                description: The error code
+ *               status:
+ *                   type: boolean
+ *                   description: The status of the response
+ *               message:
+ *                   type: string
+ *                   description: The message of the response
+ *             example:
+ *              code: 400
+ *              status: false
+ *              message: "Testimonial not created"
  *       500:
  *        description: Internal server error
  *        content:
  *          application/json:
  *           schema:
- *            $ref: '#/components/schemas/Error500Schema'
+ *             type: object
+ *             properties:
+ *               code:
+ *                type: integer
+ *                description: The error code
+ *               status:
+ *                   type: boolean
+ *                   description: The status of the response
+ *               message:
+ *                   type: string
+ *                   description: The message of the response
+ *             example:
+ *              code: 500
+ *              status: false
+ *              message: "Internal server error"
  */
 router.post('/', auth, isAdmin, uploadImage('image'), validateSchema(createTestimonialSchema), post)
 
@@ -220,19 +177,56 @@ router.post('/', auth, isAdmin, uploadImage('image'), validateSchema(createTesti
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/components/schemas/TestimonialResponseSchema'
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   format: boolean
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *                 body:
+ *                   $ref: '#/components/schemas/Testimonial'
  *       500:
  *        description: Internal server error
  *        content:
  *          application/json:
  *           schema:
- *            $ref: '#/components/schemas/Error500Schema'
+ *             type: object
+ *             properties:
+ *               code:
+ *                type: integer
+ *                description: The error code
+ *               status:
+ *                   type: boolean
+ *                   description: The status of the response
+ *               message:
+ *                   type: string
+ *                   description: The message of the response
+ *             example:
+ *              code: 500
+ *              status: false
+ *              message: "Internal server error"
  *       404:
  *        description: Testimonial not found
  *        content:
  *          application/json:
  *           schema:
- *            $ref: '#/components/schemas/Error404Schema'
+ *             type: object
+ *             properties:
+ *               code:
+ *                type: integer
+ *                description: The error code
+ *               status:
+ *                   type: boolean
+ *                   description: The status of the response
+ *               message:
+ *                   type: string
+ *                   description: The message of the response
+ *             example:
+ *              code: 404
+ *              status: false
+ *              message: "Testimonial with id 1 not found"
  */
 router.put(
   '/:id',
@@ -274,7 +268,21 @@ router.put(
  *        content:
  *          application/json:
  *           schema:
- *            $ref: '#/components/schemas/Error500Schema'
+ *             type: object
+ *             properties:
+ *               code:
+ *                type: integer
+ *                description: The error code
+ *               status:
+ *                   type: boolean
+ *                   description: The status of the response
+ *               message:
+ *                   type: string
+ *                   description: The message of the response
+ *             example:
+ *              code: 500
+ *              status: false
+ *              message: "Internal server error"
  */
 router.delete('/:id', auth, isAdmin, destroy)
 
