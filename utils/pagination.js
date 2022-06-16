@@ -1,6 +1,10 @@
+const port = process.env.PORT || 3000
+
 const baseURL = process.env.BASE_URL
-  ? `${process.env.BASE_URL}/members?page=`
-  : 'http://localhost:3000/members?page='
+  ? `${process.env.BASE_URL}`
+  : `http://localhost:${port}`
+
+const stringPage = '?page='
 
 module.exports = {
   /**
@@ -10,16 +14,16 @@ module.exports = {
    * @param {number} total entity count
    * @returns {Object} pagination object
    * */
-  calculatePagination: (page, total) => {
+  calculatePagination: (page, total, resource) => {
     const currentPage = parseInt(page, 10)
     const lastPage = Math.ceil(total / 10)
-    const prevPage = currentPage === 1 ? undefined : currentPage - 1
+    const prevPage = currentPage === 1 || currentPage > lastPage + 1 ? undefined : currentPage - 1
     const nextPage = lastPage < currentPage + 1 ? undefined : currentPage + 1
     return {
-      page: baseURL + currentPage,
-      nextPage: nextPage ? baseURL + nextPage : undefined,
-      prevPage: prevPage ? baseURL + prevPage : undefined,
-      lastPage: baseURL + lastPage,
+      page: baseURL + resource + stringPage + currentPage,
+      nextPage: nextPage ? baseURL + resource + stringPage + nextPage : undefined,
+      prevPage: prevPage ? baseURL + resource + stringPage + prevPage : undefined,
+      lastPage: lastPage === 0 ? undefined : baseURL + resource + stringPage + lastPage,
     }
   },
 }
