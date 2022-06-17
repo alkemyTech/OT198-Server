@@ -79,9 +79,11 @@ const { uploadImage } = require('../middlewares/uploadImage')
 *     description: Create a new member
 *     tags: [Members]
 *     parameters:
-*      - name: body
-*        in: body
+*      - in: body
+*        name: body
 *        required: true
+*        content:
+*         multipart/form-data:
 *        schema:
 *          type: object
 *          required:
@@ -158,12 +160,12 @@ router.get('/', auth, isAdmin, list)
 *     description: Update a member
 *     tags: [Members]
 *     parameters:
-*      - name: id
-*        in: path
+*      - in: path
+*        name: id
 *        description: Member id
 *        required: true
-*      - name: body
-*        in: body
+*      - in: body
+*        name: body
 *        required: true
 *        schema:
 *          type: object
