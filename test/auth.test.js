@@ -82,7 +82,7 @@ describe('Auth', () => {
   })
   
   // Test POST /auth/login with wrong credentials
-  describe('POST /auth/login ', () => {
+  describe('POST /auth/login with error', () => {
     it('should receive an error', (done) => {
       request(app)
       .post('/auth/login')
