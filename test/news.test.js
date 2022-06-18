@@ -2,8 +2,9 @@ const request = require('supertest')
 const { expect } = require('chai')
 const app = require('../app')
 const path = require('path')
-/* const { User } = require('../database/models') */
+const { New, Category } = require('../database/models')
 
+// User with Admin role
 const user = {
     email: 'ncrook0@yolasite.com',
     password: 'Test1234'
@@ -13,15 +14,14 @@ const newData = {
     name: 'Test new',
     content: 'Test new content',
     image: '/images/imageTest.png',
-    categoryId: 1,
 }
 
 var token
 var idNews
 
 describe('News', () => {
+    // Login user
     before((done) => {
-        // Login user
         request(app)
         .post('/auth/login')
         .send(user)
@@ -31,14 +31,34 @@ describe('News', () => {
             done()
         })
     })
-    /* after( async () => {
-        // Delete the user that was created
-        const result = await User.destroy({
-            where: { email: 'testUser.email@test.com' },
+    // Create a new category
+    before((done) => { 
+        request(app)
+        .post('/categories')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+            name: 'Test category',
+            description: 'Test description'
+        })
+        .end((err, res) => {
+            expect(res).to.have.property('status', 201)
+            expect(res.body).to.have.property('message', 'Category created')
+            newData.categoryId = res.body.body.id
+            done()
+        })
+    })
+    // Delete data that was created
+    after( async () => {
+        const removeNews = await New.destroy({
+            where: { id: idNews },
             force: true
-        });
-        return result
-    }) */
+        })
+        const removeCategory = await Category.destroy({
+            where: { id: newData.categoryId },
+            force: true
+        })
+        return removeNews && removeCategory
+    })
     describe('POST /news', () => { 
         it('should create a new news', (done) => {
             request(app)
@@ -73,7 +93,7 @@ describe('News', () => {
             .get(`/news/${idNews}`)
             .end((err, res) => {
                 expect(res).to.have.property('status', 200)
-                expect(res).to.have.property( 'message', 'successfully retrieved')
+                expect(res.body).to.have.property( 'message', 'successfully retrieved')
                 done()
             })
         })
