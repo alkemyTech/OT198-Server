@@ -10,6 +10,7 @@ const {
 const { auth } = require('../middlewares/auth')
 const { isAdmin } = require('../middlewares/isAdmin')
 const { listNewsComments } = require('../controllers/comments')
+const { uploadImage } = require('../middlewares/uploadImage')
 
 // Define news schemas
 /**
@@ -188,7 +189,7 @@ router.get('/:id', listNew)
  *                 body:
  *                   $ref: '#/components/schemas/News'
  */
-router.post('/', auth, isAdmin, validateSchema(newSchema), post)
+router.post('/', auth, isAdmin, uploadImage('image'), validateSchema(newSchema), post)
 /**
  * @swagger
  * /news/{id}:
@@ -245,7 +246,7 @@ router.post('/', auth, isAdmin, validateSchema(newSchema), post)
  *                 body:
  *                   $ref: '#/components/schemas/News'
  */
-router.put('/:id', auth, isAdmin, validateSchema(newSchema), update)
+router.put('/:id', auth, isAdmin, uploadImage('image'), validateSchema(newSchema), update)
 /**
  * @swagger
  * /news/{id}:
