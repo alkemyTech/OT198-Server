@@ -64,7 +64,7 @@ const { listNewsComments } = require('../controllers/comments')
 *   description: The news API
 */
 
-// list all news
+// list all News
 /**
  * @swagger
  * /news:
