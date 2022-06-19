@@ -22,7 +22,7 @@ const { listNewsComments } = require('../controllers/comments')
  *       in: header
  *       name: Authorization
  *   schemas:
- *     New:
+ *     News:
  *       type: object
  *       properties:
  *         name:
@@ -92,6 +92,18 @@ const { listNewsComments } = require('../controllers/comments')
  *                     name:
  *                       type: string
  *                       format: string
+ *                     content:
+ *                       type: string
+ *                       format: string
+ *                     image:
+ *                       type: file
+ *                       format: binary
+ *                     type:
+ *                       type: string
+ *                       format: string
+ *                     categoryId:
+ *                       type: integer
+ *                       format: integer
  */
 router.get('/', list)
 // list category by id
@@ -298,6 +310,12 @@ router.delete('/:id', auth, isAdmin, destroy)
  *                 message:
  *                   type: string
  *                   format: string
+ *                 body:
+ *                   type: object
+ *                   properties:
+ *                     comments:
+ *                       type: string
+ *                       format: string
  */
 router.get('/:id/comments', auth, listNewsComments)
 
