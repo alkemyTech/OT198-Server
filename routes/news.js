@@ -3,7 +3,7 @@ const express = require('express')
 const router = new express.Router()
 
 const { validateSchema } = require('../middlewares/validateErrors')
-const newSchema = require('../schemas/new')
+const { newSchema } = require('../schemas/new')
 const {
   post, listNew, update, destroy, list,
 } = require('../controllers/news')
@@ -279,7 +279,6 @@ router.put('/:id', auth, isAdmin, uploadImage('image'), validateSchema(newSchema
  *                   format: string
  */
 router.delete('/:id', auth, isAdmin, destroy)
-
 // get news comments
 /**
  * @swagger
