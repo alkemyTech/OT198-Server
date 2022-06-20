@@ -106,13 +106,9 @@ describe('News', () => {
             })
         })
         // Test POST /news without headers
-        it('should return a 401 error', (done) => {
+        it('should return a 401 error. Without headers', (done) => {
             request(app)
             .post('/news')
-            .field('name', newData.name)
-            .field('content', newData.content)
-            .field('categoryId', newData.categoryId)
-            .attach('image', path.join(__dirname, newData.image))
             .end((err, res) => {
                 expect(res).to.have.property('status', 401)
                 expect(res.body).to.have.property('message', 'No authorization header')
@@ -120,14 +116,10 @@ describe('News', () => {
             })
         })
         // Test POST /news without admin role
-        it('should return a 401 error', (done) => {
+        it('should return a 401 error. Not admin role', (done) => {
             request(app)
             .post('/news')
             .set('Authorization', `Bearer ${notAdminToken}`)
-            .field('name', newData.name)
-            .field('content', newData.content)
-            .field('categoryId', newData.categoryId)
-            .attach('image', path.join(__dirname, newData.image))
             .end((err, res) => {
                 expect(res).to.have.property('status', 401)
                 expect(res.body).to.have.property('message', 'You are not an admin')
@@ -181,6 +173,42 @@ describe('News', () => {
             .end((err, res) => {
                 expect(res).to.have.property('status', 200)
                 expect(res.body).to.have.property('message', 'New updated')
+                done()
+            })
+        })
+    })
+    describe('PUT /news with errors', () => { 
+        // Test PUT /news with validation errors
+        it('should return a 400 error', (done) => {
+            request(app)
+            .put(`/news/${idNews}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({ name: '  ', content: '   ' })
+            .end((err, res) => {
+                expect(res).to.have.property('status', 400)
+                expect(res.body.errors).to.be.an('array')
+                done()
+            })
+        })
+        // Test PUT /news without headers
+        it('should return a 401 error. Without headers', (done) => {
+            request(app)
+            .put(`/news/${idNews}`)
+            .end((err, res) => {
+                expect(res).to.have.property('status', 401)
+                expect(res.body).to.have.property('message', 'No authorization header')
+                done()
+            })
+        })
+        // Test PUT /news without admin role
+        it('should return a 401 error. Not admin role', (done) => {
+            request(app)
+            .put(`/news/${idNews}`)
+            .set('Authorization', `Bearer ${notAdminToken}`)
+            .end((err, res) => {
+                console.log(res.status)
+                expect(res).to.have.property('status', 401)
+                expect(res.body).to.have.property('message', 'You are not an admin')
                 done()
             })
         })
