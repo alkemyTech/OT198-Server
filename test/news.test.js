@@ -157,4 +157,32 @@ describe('News', () => {
             })
         })
     })
+    describe('GET /news/{id}/comments', () => { 
+        it('should return comments by news id',(done) => { 
+            request(app)
+            .get(`/news/${idNews}/comments`)
+            .set('Authorization', `Bearer ${notAdminToken}`)
+            .end((err, res) => {
+                expect(res).to.have.property('status', 200)
+                expect(res.body).to.have.property('message', `Comments of new with id ${idNews} listed`)
+                done()
+            })
+        })
+    })
+    describe('PUT /news/{id}', () => { 
+        it('should update a news by id', (done) => { 
+            request(app)
+            .put(`/news/${idNews}`)
+            .set('Authorization', `Bearer ${token}`)
+            .field('name', 'Test new edited')
+            .field('content', newData.content)
+            .field('categoryId', newData.categoryId)
+            .attach('image', path.join(__dirname, newData.image))
+            .end((err, res) => {
+                expect(res).to.have.property('status', 200)
+                expect(res.body).to.have.property('message', 'New updated')
+                done()
+            })
+        })
+    })
 })
