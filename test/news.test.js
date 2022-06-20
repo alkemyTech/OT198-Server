@@ -24,6 +24,7 @@ const newData = {
 
 var token
 var idNews
+var countNews
 
 describe('News', () => {
     // Login user
@@ -149,6 +150,18 @@ describe('News', () => {
             })
         })
     })
+    describe('GET /news/{id} with errors', () => {
+        // Test GET /news/{id} with id not found
+        it('should return a 404 error', (done) => { 
+            request(app)
+            .get(`/news/0`)
+            .end((err, res) => {
+                expect(res).to.have.property('status', 404)
+                expect(res.body).to.have.property('message', `New not found`)
+                done()
+            })
+        })
+     })
     describe('GET /news/{id}/comments', () => { 
         it('should return comments by news id',(done) => { 
             request(app)
@@ -157,6 +170,19 @@ describe('News', () => {
             .end((err, res) => {
                 expect(res).to.have.property('status', 200)
                 expect(res.body).to.have.property('message', `Comments of new with id ${idNews} listed`)
+                done()
+            })
+        })
+    })
+    describe('GET /news/{id}/comments with errors', () => { 
+        // Test GET /news/{id}/comments with id not found
+        it('should return a 404 error', (done) => { 
+            request(app)
+            .get(`/news/0/comments`)
+            .set('Authorization', `Bearer ${notAdminToken}`)
+            .end((err, res) => {
+                expect(res).to.have.property('status', 404)
+                expect(res.body).to.have.property('message', `There is no news with id 0`)
                 done()
             })
         })
@@ -177,7 +203,22 @@ describe('News', () => {
             })
         })
     })
-    describe('PUT /news with errors', () => { 
+    describe('PUT /news with errors', () => {
+        // Test PUT /news with id not found
+        it('should return a 404 error', (done) => { 
+            request(app)
+            .put(`/news/0`)
+            .set('Authorization', `Bearer ${token}`)
+            .field('name', 'Test new edited')
+            .field('content', newData.content)
+            .field('categoryId', newData.categoryId)
+            .attach('image', path.join(__dirname, newData.image))
+            .end((err, res) => {
+                expect(res).to.have.property('status', 404)
+                expect(res.body).to.have.property('message', `New 0 not found`)
+                done()
+            })
+        })
         // Test PUT /news with validation errors
         it('should return a 400 error', (done) => {
             request(app)
@@ -206,7 +247,52 @@ describe('News', () => {
             .put(`/news/${idNews}`)
             .set('Authorization', `Bearer ${notAdminToken}`)
             .end((err, res) => {
-                console.log(res.status)
+                expect(res).to.have.property('status', 401)
+                expect(res.body).to.have.property('message', 'You are not an admin')
+                done()
+            })
+        })
+    })
+    describe('DELETE /news/{id}', () => { 
+        it('should delete a news by id', (done) => { 
+            request(app)
+            .delete(`/news/${idNews}`)
+            .set('Authorization', `Bearer ${token}`)
+            .end((err, res) => {
+                expect(res).to.have.property('status', 200)
+                expect(res.body).to.have.property('message', 'New deleted')
+                done()
+            })
+        })
+    })
+    describe('DELETE /news with errors', () => {
+        // Test DELETE /news/{id} with id not found
+        it('should return a 404 error', (done) => { 
+            request(app)
+            .delete(`/news/0`)
+            .set('Authorization', `Bearer ${token}`)
+            .end((err, res) => {
+                expect(res).to.have.property('status', 404)
+                expect(res.body).to.have.property('message', `New 0 not found`)
+                done()
+            })
+        })
+         // Test DELETE /news/{id} without headers
+         it('should return a 401 error. Without headers', (done) => {
+            request(app)
+            .delete(`/news/${idNews}`)
+            .end((err, res) => {
+                expect(res).to.have.property('status', 401)
+                expect(res.body).to.have.property('message', 'No authorization header')
+                done()
+            })
+        })
+        // Test DELETE /news/{id} without admin role
+        it('should return a 401 error. Not admin role', (done) => {
+            request(app)
+            .delete(`/news/${idNews}`)
+            .set('Authorization', `Bearer ${notAdminToken}`)
+            .end((err, res) => {
                 expect(res).to.have.property('status', 401)
                 expect(res.body).to.have.property('message', 'You are not an admin')
                 done()
