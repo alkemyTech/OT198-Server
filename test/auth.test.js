@@ -16,7 +16,7 @@ describe('Auth', () => {
   after( async () => {
     // Delete the user that was created
     const result = await User.destroy({
-      where: { email: 'testUser.email@test.com' },
+      where: { email: newUser.email },
       force: true
     });
     return result
