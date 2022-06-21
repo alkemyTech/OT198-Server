@@ -3,44 +3,62 @@ const request = require('supertest')
 const app = require('../app')
 const { User } = require('../database/models')
 
-describe('User', () => { 
-    let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJmaXJzdE5hbWUiOiJOaWtpdGEiLCJsYXN0TmFtZSI6IkNyb29rIiwiZW1haWwiOiJuY3Jvb2swQHlvbGFzaXRlLmNvbSIsInBob3RvIjoiaHR0cDovL2R1bW15aW1hZ2UuY29tLzE5NngxMDAucG5nL2ZmNDQ0NC9mZmZmZmYiLCJyb2xlSWQiOjEsImNyZWF0ZWRBdCI6IjIwMjItMDYtMTZUMjA6MTI6NTMuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjItMDYtMTZUMjA6MTI6NTMuMDAwWiIsImRlbGV0ZWRBdCI6bnVsbH0sImlhdCI6MTY1NTQxMjEyNSwiZXhwIjoxNjU1NDk4NTI1fQ.C-SAW1zCtfScsQ8GgYAS07H1_DWrhS-BVooCMR_qWtg'
+const newUser =  [
+    {
+        firstName:'testUsers1',
+        lastName:'testUsers1',
+        email: 'untest@test.com1',
+        password:'Test1234',
+        roleId: 1,
+    },
+    {
+        firstName:'testUsers2',
+        lastName:'testUsers2',
+        email: 'untest2@test.com',
+        password:'Test1234',
+        roleId: 2
+    }
+]
+let token
+describe('Users', () => {
     beforeEach(async () => {
-        request(app)
-            .post('/auth/login')
-            .send({
-                email: 'ncrook0@yolasite.com',
-                password: 'Test1234'
-         })
-        .end((err, res) => {
-            expect(res).to.have.property('status', 200)
-            expect(res.body.body).to.have.property('token')
-            token = res.body.body.token
+      request(app)
+        .post('/auth/login')
+        .send({
+          email: 'uatterbury2@eepurl.com',
+          password: 'Test1234'
         })
+        .end((err, res) => {
+          expect(res).to.have.property('status', 200)
+          expect(res.body.body).to.have.property('token')
+          token = res.body.body.token
+        })
+        console.log('Este es el token!! :', token)
+      await User.bulkCreate(newUser)
+    })
+    after(async () => {
+      await User.destroy({ where: { email: 'untest2@test.com' } })
     })
     describe('GET /users', () => {
         it('should return a list of users', async () => {
-
             const res = await request(app)
             .get('/users')
-            .set('Authorization', `Bearer ${token}`)
-            expect(res).to.have.property('status', 200)
-            expect(res.body.body).to.be.an('array')
+            .set('Authorization', 'Bearer '+token)
+            .expect(200)
+            expect(res.body.body).to.be.instanceOf(Array)
         })
     })
 
     describe('PUT /users/:id', () => {
         it('should update a user', async () => {
             const res = await request(app)
-            .put('/users/1')
-            .set('Authorization', `Bearer ${token}`)
+            .put('/users/3')
+            .set('Authorization', 'Bearer '+token)
             .send({
                 firstName: 'Test',
                 lastName: 'Test',
-                email: 'ncrook0@yolasite.com',
-                password: 'Test1234',
             })
-            expect(res).to.have.property('status', 200)
+            .expect(200)
             expect(res.body.body).to.have.property('firstName', 'Test')
             expect(res.body.body).to.have.property('lastName', 'Test')
         })
@@ -49,10 +67,10 @@ describe('User', () => {
     describe('DELETE /users/:id', () => {
         it('should delete a user', async () => {
             const res = await request(app)
-            .delete('/users/4')
-            .set('Authorization', `Bearer ${token}`)
-            expect(res).to.have.property('status', 200)
-            expect(res.body.body).to.have.property('message', 'User deleted')
+            .delete('/users/6')
+            .set('Authorization', 'Bearer '+token)
+            .expect(200)
+            expect(res.body).to.have.property('message', 'User deleted')
         })
     })
 
@@ -68,7 +86,7 @@ describe('User', () => {
         it('should return a 404 error', async () => {
             const res = await request(app)
             .put('/users/100')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', 'Bearer '+token)
             .send({
                 firstName: 'Test',
                 lastName: 'Test',
@@ -83,7 +101,7 @@ describe('User', () => {
         it('should return a 404 error', async () => {
             const res = await request(app)
             .delete('/users/100')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', 'Bearer '+token)
             expect(res).to.have.property('status', 404)
             expect(res.body).to.have.property('message', 'User not found')
         })
@@ -92,7 +110,7 @@ describe('User', () => {
         it('should return a 400 error', async () => {
             const res = await request(app)
             .put('/users/100')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', 'Bearer '+token)
             expect(res).to.have.property('status', 400)
             expect(res.body).to.have.property('errors').to.be.an('array')
         })
