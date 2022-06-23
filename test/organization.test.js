@@ -20,6 +20,9 @@ const dummyOrganizations = [
 
 describe('Organizations', () => {
     let authToken;
+    let org = []
+    let originalOrganizationId = 0
+    let originalOrganization = {}
 
     before(async () => {
 
@@ -34,12 +37,33 @@ describe('Organizations', () => {
             expect(res.body.body).to.have.property('token')
             authToken = res.body.body.token
         })
-        await Organization.bulkCreate(dummyOrganizations)
-        
+        org = await Organization.findAll()
+        if (!org.length){
+            await Organization.bulkCreate(dummyOrganizations)
+        } else {
+            originalOrganizationId = org[0].id
+            originalOrganization = {
+                name: org[0].name,
+                image: org[0].image,
+                address: org[0].address,
+                phone: org[0].phone,
+                email: org[0].email,
+                facebookUrl: org[0].facebookUrl,
+                instagramUrl: org[0].instagramUrl,
+                linkedinUrl: org[0].linkedinUrl,
+                welcomeText: org[0].welcomeText,
+                aboutUsText: org[0].aboutUsText,
+            }
+        }
     })
 
     after(async () => {
-        await Organization.destroy({ where: { name: 'Organization 3' },force: true })
+        if(!org.length){
+            await Organization.destroy({ where: { facebookUrl: 'www.organizationfacebookUrl1.com' } })
+        }
+        else {
+            await Organization.update(originalOrganization, { where: { id: originalOrganizationId }})
+        }
     })
 
     describe('GET /organization/public', () => {
@@ -65,10 +89,11 @@ describe('Organizations', () => {
                     image:'/images/imageTest.png'
                 }))
             expect(response).to.have.property('status', 200)
-            expect(response.body.body).to.have.property('name', 'Organization 3')
-            expect(response.body.body).to.have.property('welcomeText', 'Welcome Organization 3!!!')
-            expect(response.body.body).to.have.property('email', 'organization3@email.com')
-            expect(response.body.body).to.have.property('image')
+            expect(response.body.body).to.be.instanceOf(Array)
+            expect(response.body.body[0]).to.have.property('name', 'Organization 3')
+            expect(response.body.body[0]).to.have.property('welcomeText', 'Welcome Organization 3!!!')
+            expect(response.body.body[0]).to.have.property('email', 'organization3@email.com')
+            expect(response.body.body[0]).to.have.property('image')
             }
         )}
     )
